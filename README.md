@@ -54,10 +54,13 @@ tar -xvzf meme-5.4.1.tar.gz
 cd meme-5.4.1
 ```
 
-Configure the MEME suite build process, with the correct paths
+Configure the MEME suite build process, with the correct paths:
+
 `--prefix` specifies your installation directory, so this might have to be modified.
 The $HOME environment variable (in Unix-based systems like macOS) refers to your home directory, e.g. in my case, /Users/dorschel
+
 `--with-url` sets the URL for the MEME suite
+
 `--with-libxml2` sets the path to the libxml2 library installed Homebrew, same is done for pcre and cairo.
 
 ```bash
@@ -153,6 +156,7 @@ Note to self, my hg19 genome file is located here:
 **1g. Prepare input files**
 
 **Centering and adjusting regions to equal lengths**
+
 MEME-ChIP expects all input sequences (i.e. the peak regions specified in your bed file) to be of consistent length. This prevents longer regions from skewing the analysis by providing more opportunities for random motif matches.
 
 Consequently, we can adjust the input sequences to a uniform length. A common range seems to be around 150-200bp, but you can make this decision based on the summary statistics of your bed file. For example, in my ZFP57 ChIP-seq file (2372 peaks), the mean peak length is 272bp (SD+/- 181bp), and the median peak length is 223bp. 
@@ -172,6 +176,7 @@ bedtools getfasta -fi /path/to/hg19.fa -bed input_bed_file.bed -fo input_fasta_f
 ```
 
 `bedtools getfasta` is the command to extract FASTA sequences based on BED coordinates
+
 `-fi hg19.fa` specifies the input reference genome file (hg19.fa)
 
 Look at the converted fasta to ensure it is correctly generated:
@@ -187,14 +192,14 @@ E.g.
 - FIMO: To find specific occurences of known motifs within your sequences.
 
 MEME-ChIP runs the following workflow:
-> Processing of your input sequence via getsize, fasta-most, fasta-center, fasta-get-markov
-> MEME
-> STREME (finds shorter motifs)
-> CentriMo (finds centrally enriched motifs)
-> Tomtom (compares discovered motifs to known motifs in a database)
-> SpaMo (finds secondary motifs that are enriched in the vicinity of primary motifs)
-> FIMO (finds occurrences of specific motifs)
-> Conversion of TSV
+- Processing of your input sequence via getsize, fasta-most, fasta-center, fasta-get-markov
+- MEME
+- STREME (finds shorter motifs)
+- CentriMo (finds centrally enriched motifs)
+- Tomtom (compares discovered motifs to known motifs in a database)
+- SpaMo (finds secondary motifs that are enriched in the vicinity of primary motifs)
+- FIMO (finds occurrences of specific motifs)
+- Conversion of TSV
 
 Let's run MEME-ChIP. Here is an example command:
 
